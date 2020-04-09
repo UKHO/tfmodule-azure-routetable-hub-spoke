@@ -29,14 +29,9 @@ variable "route" {
 variable "hop" {
  description = "Type of hop required"
 }
-variable "api" {
-  description = "api subnet name"
-}
-variable "nsb" {
-  description = "nsb subnet name"
-}
-variable "web" {
-  description = "web subnet name"
+
+variable "subnets" {
+  description = "subnet name"
 }  
 variable "hubprefix" {
   description = "hub vnet range" 

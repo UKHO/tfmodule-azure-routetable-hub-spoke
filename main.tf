@@ -36,7 +36,7 @@ resource "azurerm_route_table" "main" {
 data "azurerm_subnet" "main" {
   count                = length(var.subnets)
   provider             = azurerm.spoke
-  name                 = var.subnets[count.index]
+  name                 = var.subnets[count.index].name
   resource_group_name  = var.spokerg
   virtual_network_name = local.vnet_name
 }

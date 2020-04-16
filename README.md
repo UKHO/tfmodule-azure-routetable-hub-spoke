@@ -22,4 +22,6 @@ module "create" {
 }
 ```
 
+`id`: Identity of project, this is used to build up elements like the vnet
+
 `subnets` is an array of subnets, if you have been using the tfmodule for our vnet and nsg setup, it is the same object.

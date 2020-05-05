@@ -1,23 +1,9 @@
-
-  terraform {
-  backend "azurerm" {
-    resource_group_name           = ""
-    storage_account_name          = ""
-    container_name                = ""
-    key                           = ""
-  }
-}
-
 provider "azurerm" {
-  version = "~> 1.40" #2.1
-  alias = "spoke"
-  subscription_id = var.spokesubscriptionid
-}
-
-provider "azurerm" {
-  version = "~> 1.40" #2.1
   alias = "hub"
-  subscription_id = var.hubsubscriptionid
+}
+
+provider "azurerm" {
+  alias = "spoke"
 }
 
 locals {

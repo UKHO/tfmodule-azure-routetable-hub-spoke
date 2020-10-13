@@ -1,10 +1,4 @@
   
-variable "spokesubscriptionid" {
-  description = "name of spoke subscription"
-}
-variable "hubsubscriptionid" {
-  description = "name of hub subscription"
-}
 variable "spokerg" {
   description = "name of spoke resource group"
 }

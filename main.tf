@@ -1,11 +1,13 @@
 provider "azurerm" {
-  version         = "~> 1.40" #2.1
+  version         = "=2.20.0"
+  features {}
   alias           = "spoke"
   subscription_id = var.spokesubscriptionid
 }
 
 provider "azurerm" {
-  version         = "~> 1.40" #2.1
+  version         = "=2.20.0"
+  features {}
   alias           = "hub"
   subscription_id = var.hubsubscriptionid
 }

@@ -4,10 +4,27 @@ Route table creation with subnet association. Cross subscription routing from a 
 ## Use
 
 ```terraform
+provider "azurerm" {
+  version = "=2.20.0"
+  features {}
+  alias           = "hub"
+  subscription_id = var.hub_sub_Id
+}
+provider "azurerm" {
+  version = "=2.20.0"
+  features {}
+  alias           = "spoke"
+  subscription_id = local.spoke_sub_id
+}
+
 module "create" {
-    source                  = "github.com/ukho/tfmodule-azure-routetable-hub-spoke?ref=0.2.0"
-    spokesubscriptionid     =  var.spokesubscriptionid
-    hubsubscriptionid       =  var.hubsubscriptionid
+    source                  = "github.com/ukho/tfmodule-azure-routetable-hub-spoke?ref=0.3.0"
+    providers = {
+        azurerm.hub   = azurerm.hub
+        azurerm.spoke = azurerm.spoke
+    }    
+    spokesubscriptionid     =  var.spoke_sub_id
+    hubsubscriptionid       =  var.hub_sub_id
     spokerg                 =  var.spokerg
     hubrg                   =  var.hubrg
     hubrt                   =  var.hubrt

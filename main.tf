@@ -1,13 +1,9 @@
 provider "azurerm" {
-  version         = "~> 1.40" #2.1
   alias           = "spoke"
-  subscription_id = var.spokesubscriptionid
 }
 
 provider "azurerm" {
-  version         = "~> 1.40" #2.1
   alias           = "hub"
-  subscription_id = var.hubsubscriptionid
 }
 
 locals {

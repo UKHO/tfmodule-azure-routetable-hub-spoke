@@ -23,8 +23,6 @@ module "create" {
         azurerm.hub   = azurerm.hub
         azurerm.spoke = azurerm.spoke
     }    
-    spokesubscriptionid     =  var.spoke_sub_id
-    hubsubscriptionid       =  var.hub_sub_id
     spokerg                 =  var.spokerg
     hubrg                   =  var.hubrg
     hubrt                   =  var.hubrt

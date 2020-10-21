@@ -25,7 +25,7 @@ variable "hop" {
 }
 
 variable "subnets" {
-  description = "subnet name"
+  description = "array contains names of subnets, the subnet array used on the tfmodule-azure-vnet-with-nsg fits this expected pattern"
 }  
 variable "hubprefix" {
   description = "hub vnet range" 

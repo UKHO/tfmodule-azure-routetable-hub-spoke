@@ -64,5 +64,4 @@ resource "azurerm_route" "main" {
   route_table_name    = data.azurerm_route_table.main.name
   address_prefix      = var.spokeprefix
   next_hop_type       = var.hop
-  lifecycle { ignore_changes = [tags] }
 }

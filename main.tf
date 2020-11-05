@@ -43,7 +43,6 @@ resource "azurerm_subnet_route_table_association" "main" {
   provider       = azurerm.spoke
   subnet_id      = data.azurerm_subnet.main[count.index].id
   route_table_id = azurerm_route_table.main.id
-  lifecycle { ignore_changes = [tags] }
 }
 
 data "azurerm_resource_group" "hub" {

@@ -21,17 +21,17 @@ variable "route" {
   description = "route address for hub" #to-M-ENVIRONMENT-route
 }
 variable "hop" {
- description = "Type of hop required"
+ description = "Array of type of hop required, related to hub and spoke prefixes"
 }
 
 variable "subnets" {
   description = "array contains names of subnets, the subnet array used on the tfmodule-azure-vnet-with-nsg fits this expected pattern"
 }  
 variable "hubprefix" {
-  description = "hub vnet range" 
+  description = "array of hub vnet range prefixes" 
 }
 variable "spokeprefix" {
-  description = "spoke vnet range" 
+  description = "array of spoke vnet range prefixes" 
 }
 
 

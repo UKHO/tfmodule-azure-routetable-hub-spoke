@@ -1,9 +1,11 @@
 provider "azurerm" {
-  alias           = "spoke"
+
+  alias = "spoke"  
 }
 
 provider "azurerm" {
-  alias           = "hub"
+
+  alias = "hub"  
 }
 
 locals {
@@ -12,7 +14,7 @@ locals {
 
 data "azurerm_resource_group" "main" {
   provider = azurerm.spoke
-  name     = var.spokerg
+  name     = var.spokerg 
 }
 
 resource "azurerm_route_table" "main" {
@@ -21,12 +23,7 @@ resource "azurerm_route_table" "main" {
   location                      = data.azurerm_resource_group.main.location
   resource_group_name           = data.azurerm_resource_group.main.name
   disable_bgp_route_propagation = false
-
-  route {
-    name           = var.routeaddress
-    address_prefix = var.hubprefix
-    next_hop_type  = var.hop
-  }
+  
   lifecycle { ignore_changes = [tags] }
 }
 
@@ -57,10 +54,21 @@ data "azurerm_route_table" "main" {
 }
 
 resource "azurerm_route" "main" {
+  provider            = azurerm.spoke
+  name                = var.spokeroute[count.index]
+  resource_group_name = data.azurerm_resource_group.main.name
+  route_table_name    = azurerm_route_table.main.name
+  address_prefix      = var.spokeprefix[count.index]
+  next_hop_type       = var.hop[count.index]
+  count               = length(var.spokeroute)
+}
+
+resource "azurerm_route" "main1" {
   provider            = azurerm.hub
-  name                = var.route
+  name                = var.hubroute[count.index]
   resource_group_name = data.azurerm_resource_group.hub.name
   route_table_name    = data.azurerm_route_table.main.name
-  address_prefix      = var.spokeprefix
-  next_hop_type       = var.hop
+  address_prefix      = var.hubprefix[count.index]
+  next_hop_type       = var.hop[count.index]
+  count               = length(var.hubroute)
 }

@@ -1,38 +1,33 @@
-  
 variable "spokerg" {
-  description = "name of spoke resource group"
+ #description = "name of spoke resource group"
 }
 variable "hubrg" {
-  description = "name of hub resource group"
+ #description = "name of hub resource group"
 }
 variable "hubrt" {
-  description = "hub route table name" #This will likely be in core services
+  #description = "hub route table name" 
 }
 variable "id" {
-  description = "environment you're deploying too"
+  #description = "environment you're deploying too"
 }
 variable "routetable" {
-  description = "name of route table to be created"
+  #description = "spoke route table"
 }
-variable "routeaddress" {
-  description = "route address name" #to-M-ENVIRONMENT-route 
+variable "spokeroute" {
+  #description = "Spoke routetable route array [""]
 }
-variable "route" {
-  description = "route address for hub" #to-M-ENVIRONMENT-route
+variable "hubroute" {
+  #description = "Hub routetable routes" [""]
 }
 variable "hop" {
- description = "Array of type of hop required, related to hub and spoke prefixes"
+  #description = "The type of hop you require in a array" ["VirtualNetworkGateway"]
 }
-
 variable "subnets" {
-  description = "array contains names of subnets, the subnet array used on the tfmodule-azure-vnet-with-nsg fits this expected pattern"
-}  
-variable "hubprefix" {
-  description = "array of hub vnet range prefixes" 
+ #description = "array contains names of subnets, the subnet array used on the tfmodule-azure-vnet-with-nsg fits this expected pattern" 
 }
 variable "spokeprefix" {
-  description = "array of spoke vnet range prefixes" 
+  #description = "Spoke ip route array" [""]
 }
-
-
-
+variable "hubprefix" {
+  #description = "hub ip route array" [""]  
+}

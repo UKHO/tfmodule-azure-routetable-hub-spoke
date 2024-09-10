@@ -12,8 +12,7 @@ resource "azurerm_route_table" "main" {
   name                          = var.routetable
   location                      = data.azurerm_resource_group.main.location
   resource_group_name           = data.azurerm_resource_group.main.name
-  disable_bgp_route_propagation = false
-  
+
   lifecycle { ignore_changes = [tags] }
 }
 

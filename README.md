@@ -38,6 +38,9 @@ variable "hubroute" {
 variable "hop" {
   #description = "The type of hop you require in a array" ["VirtualNetworkGateway"]
 }
+variable "nexthopipaddress" {
+  description = "The next hop IP address in a array, this is only required if the next hop type is set to VirtualAppliance"
+}
 variable "subnets" {
  #description = "array contains names of subnets, the subnet array used on the tfmodule-azure-vnet-with-nsg fits this expected pattern" 
 }
@@ -64,6 +67,7 @@ module "create" {
     spokeroute              =  var.spokeroute
     hubroute                =  var.hubroute
     hop                     =  var.hop
+    next_hop_in_ip_address  =  var.nexthopipaddress
     subnets                 =  var.SUBNETS
     hubprefix               =  var.hubprefix
     spokeprefix             =  var.spokeprefix

@@ -4,14 +4,14 @@ locals {
 
 data "azurerm_resource_group" "main" {
   provider = azurerm.spoke
-  name     = var.spokerg 
+  name     = var.spokerg
 }
 
 resource "azurerm_route_table" "main" {
-  provider                      = azurerm.spoke
-  name                          = var.routetable
-  location                      = data.azurerm_resource_group.main.location
-  resource_group_name           = data.azurerm_resource_group.main.name
+  provider            = azurerm.spoke
+  name                = var.routetable
+  location            = data.azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
 
   lifecycle { ignore_changes = [tags] }
 }
@@ -43,21 +43,23 @@ data "azurerm_route_table" "main" {
 }
 
 resource "azurerm_route" "main" {
-  provider            = azurerm.spoke
-  name                = var.spokeroute[count.index]
-  resource_group_name = data.azurerm_resource_group.main.name
-  route_table_name    = azurerm_route_table.main.name
-  address_prefix      = var.spokeprefix[count.index]
-  next_hop_type       = var.hop[count.index]
-  count               = length(var.spokeroute)
+  provider               = azurerm.spoke
+  name                   = var.spokeroute[count.index]
+  resource_group_name    = data.azurerm_resource_group.main.name
+  route_table_name       = azurerm_route_table.main.name
+  address_prefix         = var.spokeprefix[count.index]
+  next_hop_type          = var.hop[count.index]
+  next_hop_in_ip_address = var.nexthopipaddress[count.index]
+  count                  = length(var.spokeroute)
 }
 
 resource "azurerm_route" "main1" {
-  provider            = azurerm.hub
-  name                = var.hubroute[count.index]
-  resource_group_name = data.azurerm_resource_group.hub.name
-  route_table_name    = data.azurerm_route_table.main.name
-  address_prefix      = var.hubprefix[count.index]
-  next_hop_type       = var.hop[count.index]
-  count               = length(var.hubroute)
+  provider               = azurerm.hub
+  name                   = var.hubroute[count.index]
+  resource_group_name    = data.azurerm_resource_group.hub.name
+  route_table_name       = data.azurerm_route_table.main.name
+  address_prefix         = var.hubprefix[count.index]
+  next_hop_type          = var.hop[count.index]
+  next_hop_in_ip_address = var.nexthopipaddress[count.index]
+  count                  = length(var.hubroute)
 }

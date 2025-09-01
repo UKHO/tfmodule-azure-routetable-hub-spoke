@@ -7,6 +7,10 @@ variable "hubrg" {
   type = string
 }
 
+variable "hubrt" {
+  description = "hub route table name" 
+}
+
 variable "id" {
   description = "Environment identifier (used in VNet naming convention)"
   type        = string

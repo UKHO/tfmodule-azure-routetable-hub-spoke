@@ -26,7 +26,7 @@ resource "azurerm_subnet_route_table_association" "main" {
   route_table_id = azurerm_route_table.main.id
 }
 
-resource "azurerm_route" "main" {
+resource "azurerm_route" "spoke" {
   for_each = {
     for idx, route_name in var.spokeroute : route_name => {
       name           = route_name
@@ -45,9 +45,9 @@ resource "azurerm_route" "main" {
 }
 
 
-resource "azurerm_route" "main" {
+resource "azurerm_route" "hub" {
   for_each = {
-    for idx, route_name in var.spokeroute : route_name => {
+    for idx, route_name in var.hubroute : route_name => {
       name           = route_name
       address_prefix = var.hubprefix[idx]
       next_hop_type  = var.hop[idx]
@@ -56,7 +56,7 @@ resource "azurerm_route" "main" {
   provider               = azurerm.hub
   name                   = each.key
   resource_group_name    = data.azurerm_resource_group.hub.name
-  route_table_name       = data.azurerm_route_table.main.name
+  route_table_name       = azurerm_route_table.main.name
   address_prefix         = each.value.address_prefix
   next_hop_type          = each.value.next_hop_type
   next_hop_in_ip_address = each.value.next_hop_in_ip_address

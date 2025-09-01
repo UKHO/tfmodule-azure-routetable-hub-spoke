@@ -3,6 +3,10 @@ variable "spokerg" {
   type        = string
 }
 
+variable "hubrg" {
+  type = string
+}
+
 variable "id" {
   description = "Environment identifier (used in VNet naming convention)"
   type        = string

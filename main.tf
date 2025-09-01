@@ -65,7 +65,7 @@ resource "azurerm_route" "hub" {
     }
   }
   provider               = azurerm.hub
-  name                   = each.key
+  name                   = each.value.name
   resource_group_name    = data.azurerm_resource_group.hub.name
   route_table_name       = azurerm_route_table.main.name
   address_prefix         = each.value.address_prefix

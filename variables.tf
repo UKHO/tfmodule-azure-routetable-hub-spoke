@@ -43,9 +43,9 @@ variable "hubprefix" {
   type        = list(string)
 }
 
-variable "nexthopipaddress" {
-  description = "The next hop IP address in a array, this is only required if the next hop type is set to VirtualAppliance"
-}
+#variable "nexthopipaddress" {
+#  description = "The next hop IP address in a array, this is only required if the next hop type is set to VirtualAppliance"
+#}
 
 
 #variable "spokerg" {

@@ -8,6 +8,11 @@ data "azurerm_resource_group" "main" {
   name     = var.spokerg
 }
 
+data "azurerm_resource_group" "hub" {
+  provider = azurerm.hub
+  name     = var.hubrg
+}
+
 resource "azurerm_route_table" "main" {
   provider            = azurerm.spoke
   name                = var.routetable

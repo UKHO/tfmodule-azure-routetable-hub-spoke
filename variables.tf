@@ -1,48 +1,51 @@
 variable "spokerg" {
   description = "Name of spoke resource group"
-}
-
-variable "hubrg" {
-  description = "Name of hub resource group"
-}
-
-variable "hubrt" {
-  description = "Hub route table name"
+  type        = string
 }
 
 variable "id" {
-  description = "Environment you're deploying to"
+  description = "Environment identifier (used in VNet naming convention)"
+  type        = string
 }
 
 variable "routetable" {
-  description = "Spoke route table"
+  description = "Spoke route table name"
+  type        = string
 }
 
-variable "subnets" {
-  description = "List of subnet names"
+variable "spokeroute" {
+  description = "List of spoke route names"
   type        = list(string)
 }
 
-variable "spoke_routes" {
-  description = "List of spoke routes"
-  type = list(object({
-    name                   = string
-    address_prefix         = string
-    next_hop_type          = string
-    next_hop_in_ip_address = optional(string)
-  }))
+variable "hubroute" {
+  description = "List of hub route names"
+  type        = list(string)
 }
 
-variable "hub_routes" {
-  description = "List of hub routes"
-  type = list(object({
-    name                   = string
-    address_prefix         = string
-    next_hop_type          = string
-    next_hop_in_ip_address = optional(string)
-  }))
+variable "hop" {
+  description = "List of next hop types (e.g. [\"VirtualNetworkGateway\"])"
+  type        = list(string)
 }
 
+variable "subnet_ids" {
+  description = "Map of subnet IDs keyed by subnet name"
+  type        = map(string)
+}
+
+variable "spokeprefix" {
+  description = "List of route address prefixes"
+  type        = list(string)
+}
+
+variable "hubprefix" {
+  description = "List of route address prefixes"
+  type        = list(string)
+}
+
+variable "nexthopipaddress" {
+  description = "The next hop IP address in a array, this is only required if the next hop type is set to VirtualAppliance"
+}
 
 
 #variable "spokerg" {
@@ -81,3 +84,4 @@ variable "hub_routes" {
 #variable "hubprefix" {
 #  description = "Hub ip route array"
 #}
+#

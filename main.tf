@@ -1,14 +1,13 @@
+
 locals {
   vnet_name = "${var.id}-vnet"
 }
 
-# Spoke RG
 data "azurerm_resource_group" "main" {
   provider = azurerm.spoke
   name     = var.spokerg
 }
 
-# Spoke Route Table
 resource "azurerm_route_table" "main" {
   provider            = azurerm.spoke
   name                = var.routetable
@@ -20,74 +19,48 @@ resource "azurerm_route_table" "main" {
   }
 }
 
-# Subnets (for_each instead of count)
-data "azurerm_subnet" "main" {
-  for_each             = toset(var.subnets)
-  provider             = azurerm.spoke
-  name                 = each.value
-  resource_group_name  = var.spokerg
-  virtual_network_name = local.vnet_name
-}
-
-# Subnet → Route Table associations
 resource "azurerm_subnet_route_table_association" "main" {
-  for_each       = data.azurerm_subnet.main
+  for_each       = var.subnet_ids
   provider       = azurerm.spoke
-  subnet_id      = each.value.id
+  subnet_id      = each.value
   route_table_id = azurerm_route_table.main.id
 }
 
-# Hub RG
-data "azurerm_resource_group" "hub" {
-  provider = azurerm.hub
-  name     = var.hubrg
+resource "azurerm_route" "main" {
+  for_each = {
+    for idx, route_name in var.spokeroute : route_name => {
+      name           = route_name
+      address_prefix = var.spokeprefix[idx]
+      next_hop_type  = var.hop[idx]
+    }
+  }
+
+  provider            = azurerm.spoke
+  name                = each.value.name
+  resource_group_name = data.azurerm_resource_group.main.name
+  route_table_name    = azurerm_route_table.main.name
+  address_prefix      = each.value.address_prefix
+  next_hop_type       = each.value.next_hop_type
+  next_hop_in_ip_address = each.value.next_hop_in_ip_address
 }
 
-# Hub Route Table
-data "azurerm_route_table" "main" {
-  provider            = azurerm.hub
-  name                = var.hubrt
-  resource_group_name = data.azurerm_resource_group.hub.name
-}
 
-# Spoke Routes
-resource "azurerm_route" "spoke" {
-  for_each               = { for r in var.spoke_routes : r.name => r }
-  provider               = azurerm.spoke
-  name                   = each.value.name
-  resource_group_name    = data.azurerm_resource_group.main.name
-  route_table_name       = azurerm_route_table.main.name
-  address_prefix         = each.value.address_prefix
-  next_hop_type          = each.value.next_hop_type
-  next_hop_in_ip_address = lookup(each.value, "next_hop_in_ip_address", null)
-}
-
-# Hub Routes
-resource "azurerm_route" "hub" {
-  for_each               = { for r in var.hub_routes : r.name => r }
+resource "azurerm_route" "main" {
+  for_each = {
+    for idx, route_name in var.spokeroute : route_name => {
+      name           = route_name
+      address_prefix = var.hubprefix[idx]
+      next_hop_type  = var.hop[idx]
+    }
+  }
   provider               = azurerm.hub
-  name                   = each.value.name
+  name                   = each.key
   resource_group_name    = data.azurerm_resource_group.hub.name
   route_table_name       = data.azurerm_route_table.main.name
   address_prefix         = each.value.address_prefix
   next_hop_type          = each.value.next_hop_type
-  next_hop_in_ip_address = lookup(each.value, "next_hop_in_ip_address", null)
+  next_hop_in_ip_address = each.value.next_hop_in_ip_address
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -15,60 +15,75 @@
 ## Usage Vars
 
 variable "spokerg" {
- #description = "name of spoke resource group"
+  description = "Name of spoke resource group"
+  type        = string
 }
+
 variable "hubrg" {
- #description = "name of hub resource group"
+  type = string
 }
+
 variable "hubrt" {
-  #description = "hub route table name" 
+  description = "hub route table name" 
 }
+
 variable "id" {
-  #description = "environment you're deploying too"
+  description = "Environment identifier (used in VNet naming convention)"
+  type        = string
 }
+
 variable "routetable" {
-  #description = "spoke route table"
+  description = "Spoke route table name"
+  type        = string
 }
+
 variable "spokeroute" {
-  #description = "Spoke routetable route array [""]
+  description = "List of spoke route names"
+  type        = list(string)
 }
+
 variable "hubroute" {
-  #description = "Hub routetable routes" [""]
+  description = "List of hub route names"
+  type        = list(string)
 }
+
 variable "hop" {
-  #description = "The type of hop you require in a array" ["VirtualNetworkGateway"]
+  description = "List of next hop types (e.g. [\"VirtualNetworkGateway\"])"
+  type        = list(string)
 }
-variable "nexthopipaddress" {
-  description = "The next hop IP address in a array, this is only required if the next hop type is set to VirtualAppliance"
+
+variable "subnet_ids" {
+  description = "Map of subnet IDs keyed by subnet name"
+  type        = map(string)
 }
-variable "subnets" {
- #description = "array contains names of subnets, the subnet array used on the tfmodule-azure-vnet-with-nsg fits this expected pattern" 
-}
+
 variable "spokeprefix" {
-  #description = "Spoke ip route array" [""]
+  description = "List of route address prefixes"
+  type        = list(string)
 }
+
 variable "hubprefix" {
-  #description = "hub ip route array" [""]  
+  description = "List of route address prefixes"
+  type        = list(string)
 }
 
 ## Module
 
-module "create" {
-    source                    = "github.com/UKHO/route-table-additional-routes"
-    providers = {
-        azurerm.hub   = azurerm.hub
-        azurerm.spoke = azurerm.test
-    }    
-    spokerg                 =  var.spokerg
-    hubrg                   =  var.hubrg
-    hubrt                   =  var.hubrt
-    id                      =  var.id
-    routetable              =  var.routetable
-    spokeroute              =  var.spokeroute
-    hubroute                =  var.hubroute
-    hop                     =  var.hop
-    next_hop_in_ip_address  =  var.nexthopipaddress
-    subnets                 =  var.SUBNETS
-    hubprefix               =  var.hubprefix
-    spokeprefix             =  var.spokeprefix
+module "routetable" {
+  source    = "github.com/UKHO/tfmodule-azure-routetable-hub-spoke?ref=v0.7.0"
+  providers = {
+    azurerm.spoke = azurerm.spoke
+    azurerm.hub   = azurerm.hub
+  }
+  spokerg      = local.spokerg
+  hubrg        = local.hubrg
+  hubrt        = local.hubrt
+  id           = local.id
+  routetable   = local.routetable
+  spokeroute   = local.spokeroute
+  hubroute     = local.hubroute
+  hop          = local.hop
+  subnet_ids   = module.spokesetup.subnet_ids
+  spokeprefix  = local.spokeprefix
+  hubprefix    = local.hubprefix
 }

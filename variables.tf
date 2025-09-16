@@ -8,7 +8,7 @@ variable "hubrg" {
 }
 
 variable "hubrt" {
-  description = "hub route table name" 
+  description = "hub route table name"
 }
 
 variable "id" {
@@ -38,6 +38,7 @@ variable "hop" {
 
 variable "nexthopipaddress" {
   description = "The next hop IP address in a array, this is only required if the next hop type is set to VirtualAppliance"
+  type        = list(string)
 }
 
 variable "subnet_ids" {

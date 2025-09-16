@@ -47,6 +47,7 @@ resource "azurerm_route" "hub" {
       name           = route_name
       address_prefix = var.hubprefix[idx]
       next_hop_type  = var.hop[idx]
+      next_hop_ip_address = var.hop[idx] == "VirtualAppliance" ? var.nexthopipaddress[idx] : null
     }
   }
   provider               = azurerm.hub
@@ -54,5 +55,5 @@ resource "azurerm_route" "hub" {
   resource_group_name    = data.azurerm_resource_group.hub.name
   route_table_name       = data.azurerm_route_table.hub.name
   address_prefix         = each.value.address_prefix
-  next_hop_type          = each.value.next_hop_type  
+  next_hop_type          = each.value.next_hop_type
 }

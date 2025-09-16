@@ -37,7 +37,7 @@ variable "hop" {
 }
 
 variable "nexthopipaddress" {
-  description = "The next hop IP address in a array, this is only required if the next hop type is set to VirtualAppliance"
+  description = "List of next hop IP addresses for routes"
   type        = list(string)
 }
 

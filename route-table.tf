@@ -27,6 +27,8 @@ resource "azurerm_route" "spoke" {
       name           = route_name
       address_prefix = var.spokeprefix[idx]
       next_hop_type  = var.hop[idx]
+      # Include next_hop_ip_address only if the next hop type is VirtualAppliance
+      next_hop_ip_address = var.hop[idx] == "VirtualAppliance" ? var.nexthopipaddress[idx] : null
     }
   }
 
@@ -36,7 +38,6 @@ resource "azurerm_route" "spoke" {
   route_table_name    = azurerm_route_table.main.name
   address_prefix      = each.value.address_prefix
   next_hop_type       = each.value.next_hop_type
-  
 } 
 
 

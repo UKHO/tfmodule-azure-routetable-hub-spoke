@@ -36,6 +36,10 @@ variable "hop" {
   type        = list(string)
 }
 
+variable "nexthopipaddress" {
+  description = "The next hop IP address in a array, this is only required if the next hop type is set to VirtualAppliance"
+}
+
 variable "subnet_ids" {
   description = "Map of subnet IDs keyed by subnet name"
   type        = map(string)

@@ -37,6 +37,12 @@ variable "routetable" {
   type        = string
 }
 
+variable "bgp_route_propagation_enabled" {
+  description = "Whether gateway routes learned through BGP are propagated to the route table"
+  type        = bool
+  default     = false
+}
+
 variable "spokeroute" {
   description = "List of spoke route names"
   type        = list(string)
@@ -86,4 +92,6 @@ module "routetable" {
   subnet_ids   = module.spokesetup.subnet_ids
   spokeprefix  = local.spokeprefix
   hubprefix    = local.hubprefix
+  # Optional: omit to use true, or pass false to disable BGP route propagation.
+  bgp_route_propagation_enabled = false
 }

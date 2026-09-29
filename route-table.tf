@@ -4,10 +4,11 @@ locals {
 }
 
 resource "azurerm_route_table" "main" {
-  provider            = azurerm.spoke
-  name                = var.routetable
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  provider                      = azurerm.spoke
+  name                          = var.routetable
+  location                      = data.azurerm_resource_group.main.location
+  resource_group_name           = data.azurerm_resource_group.main.name
+  bgp_route_propagation_enabled = var.bgp_route_propagation_enabled
 
   lifecycle {
     ignore_changes = [tags]
@@ -38,5 +39,5 @@ resource "azurerm_route" "spoke" {
   address_prefix         = each.value.address_prefix
   next_hop_type          = each.value.next_hop_type
   next_hop_in_ip_address = each.value.next_hop_in_ip_address
-} 
+}
 

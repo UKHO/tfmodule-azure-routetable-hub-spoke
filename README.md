@@ -40,7 +40,7 @@ variable "routetable" {
 variable "bgp_route_propagation_enabled" {
   description = "Whether gateway routes learned through BGP are propagated to the route table"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "spokeroute" {
